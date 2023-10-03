@@ -38,6 +38,17 @@ class User < ApplicationRecord
   def following?(user)
     following_users.include?(user)
   end
-
-
+  
+  def self.search_for(content, method)
+    if method == 'perfect'
+      User.where(name: content)
+    elsif method == 'forward'
+      User.where('name Like ?', content + '%')
+    elsif method == 'backward'
+      User.where('name Like ?', '%' + content)
+    else
+      User.where('name Like ?','%' + content + '%')
+    end  
+  end  
+    
 end
