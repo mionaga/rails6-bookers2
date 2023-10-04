@@ -15,9 +15,8 @@
         <td>フォロワー<%= user.followeds.count %></td>
         <td><% unless user == current_user %>
             
-                <%= render partial: "relationships/follow_btn", locals: { user: user } %>
-              <% end %>
-            
+             <%= render partial: "relationships/follow_btn", locals: { user: user } %>
+             <% end %>
         </td>
         <td><%= link_to 'Show', user %></td>
       </tr>
