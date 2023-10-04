@@ -9,11 +9,11 @@ class Book < ApplicationRecord
     if method == 'perfect'
       Book.where(title: content)
     elsif method == 'forward'
-      Book.where('name like?', content + '%')
+      Book.where('title like?', content + '%')
     elsif method == 'backward'
-      Book.where('name Like?', '%' + content)
+      Book.where('title Like?', '%' + content)
     else
-      Book.where('name Like?', '%' + content + '%')
+      Book.where('title Like?', '%' + content + '%')
     end 
   end  
       

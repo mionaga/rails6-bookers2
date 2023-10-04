@@ -11,13 +11,15 @@
       <tr>
         <td><%= image_tag user.get_profile_image, size: '50x50' %></td>
         <td><%= user.name %></td>
-        <td><%= link_to 'Show', user %></td>
         <td>フォロー<%= user.followers.count %></td>
         <td>フォロワー<%= user.followeds.count %></td>
         <td><% unless user == current_user %>
-          <%= render partial: "relationships/follow_btn", locals: { user: current_user } %>
-          <% end %>
+            
+                <%= render partial: "relationships/follow_btn", locals: { user: user } %>
+              <% end %>
+            
         </td>
+        <td><%= link_to 'Show', user %></td>
       </tr>
     <% end %>
   </tbody>
