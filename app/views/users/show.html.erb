@@ -9,7 +9,7 @@
     <div class='col-md-8 offset-md-1'>
       <h2>Books</h2>
       <%= render 'books/index',books: @books %>
-      
+
       <h3>投稿数の前日比・前週比</h3>
         <div class="table_width">
           <table class="table table-bordered">
@@ -30,11 +30,11 @@
                 <td><% @the_day_before = @today_book.count / @yesterday_book.count %>
                 <%= (@the_day_before * 100).round %>%
                 </td>
-              <% end %>  
+              <% end %>
               </tr>
             </tbody>
           </table>
-          
+
           <table class="table table-bordered">
             <thead>
               <tr>
@@ -50,14 +50,91 @@
               <% if @last_week_book.count == 0 %>
                 <td>先週の投稿は無し</td>
               <% else %>
-                <td><% @the_week_before = @this_week_book.count.to_f / @last_week_book.count.to_f %>
+                <td><% @the_week_before = @this_week_book.count.to_f / @last_week_book.count %>
                 <%= (@the_week_before * 100).round %>%
                 </td>
-              <% end %>  
+              <% end %>
               </tr>
             </tbody>
           </table>
-        </div> 
+          <h2>７日分の投稿数</h2>
+          <table class="table table-bordered">
+            <tr>
+              <th>今日</th>
+              <th>１日前</th>
+              <th>２日前</th>
+              <th>３日前</th>
+              <th>４日前</th>
+              <th>５日前</th>
+              <th>６日前</th>
+            </tr>
+            <tr>
+              <td><%= @books.created_today.count %></td>
+              <td><%= @books.created_yesterday.count %></td>
+              <td><%= @books.created_2day_ago.count %></td>
+              <td><%= @books.created_3day_ago.count %></td>
+              <td><%= @books.created_4day_ago.count %></td>
+              <td><%= @books.created_5day_ago.count %></td>
+              <td><%= @books.created_6day_ago.count %></td>
+            </tr>
+          </table>
+          <canvas id="myLineChart"></canvas>
+            <script>
+              $(document).on('turbolinks:load',function() {
+                var ctx = document.getElementById("myLineChart");
+                var myLineChart = new Chart(ctx, {
+                  type: 'line',
+                  data: {
+                    labels: ['６日前', '５日前', '４日前', '３日前', '２日前','1日前', '今日'],
+                    datasets: [
+                      {
+                        label: '投稿した本の数',
+                        data: [
+                          <%= @books.created_6day_ago.count %>,
+                          <%= @books.created_5day_ago.count %>,
+                          <%= @books.created_4day_ago.count %>,
+                          <%= @books.created_3day_ago.count %>,
+                          <%= @books.created_2day_ago.count %>,
+                          <%= @books.created_yesterday.count %>,
+                          <%= @books.created_today.count %>,
+                        ],
+                        borderColor: "rgba(0,0,255,1)",
+                        backgroundColor: "rgba(0,0,0,0)",
+                        tension: 0.4
+                      }
+                    ],
+                  },
+                  options: {
+                    title: {
+                      display: true,
+                      text: '７日間の投稿の比較'
+                    },
+                    responsive: true,
+                    scales: {
+                      y:{
+                        suggestedMin: 0,
+                        suggestedMax: 10
+                      },
+                      x:{
+                        stacked: true
+                      },
+                    },
+                  }
+                });
+              });
+            </script>
+            
+            <%= form_with url:user_search_path(@user), method: :get, local: false do |f| %>
+              <%= f.date_field :created_at %>
+              <%= f.submit '検索', class: "btn btn-primary" %>
+            <% end %>
+            
+            <div id="search_result">
+              <% if @search_book.present? %>
+                <%= render 'search', search_book: @search_book %>
+              <% end %>  
+            </div>
+        </div>
     </div>
   </div>
 </div>
