@@ -1,5 +1,5 @@
 class BooksController < ApplicationController
-  
+
 
   def show
     @book = Book.find(params[:id])
@@ -9,8 +9,10 @@ class BooksController < ApplicationController
   end
 
   def index
-    @books = Book.all
+    # tag_idがセットされていたらTagから関連づけられたbooksを呼び指定がなければ全ての投稿を表示
+    @books = params[:tag_id].present? ? Tag.find(params[:tag_id]).books : Book.all
     @book=Book.new
+  
   end
 
   def create
@@ -29,7 +31,7 @@ class BooksController < ApplicationController
     @book = Book.find(params[:id])
     if @book.user!=current_user
       redirect_to books_path
-    end  
+    end
   end
 
   def update
@@ -52,8 +54,8 @@ class BooksController < ApplicationController
   private
 
   def book_params
-    params.require(:book).permit(:title, :body)
+    params.require(:book).permit(:title, :body, tag_ids: [])
   end
-  
-  
+
+
 end

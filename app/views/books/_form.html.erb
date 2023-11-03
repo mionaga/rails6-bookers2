@@ -8,6 +8,21 @@
     <%= f.label :opinion %>
     <%= f.text_area :body, class: 'form-control book_body' %>
   </div>
+
+  <!--#追記ここから-->
+  <div class="check_box">
+    <span>タグ</span>
+    <%= f.collection_check_boxes(:tag_ids, Tag.all, :id, :name) do |tag| %>
+     <div>
+       <%= tag.label do %>
+         <%= tag.check_box %>
+         <%= tag.text %>
+       <% end %>
+     </div>
+   <% end %>
+ </div>
+<!--#追記ここまで-->
+
   <div class="form-group">
     <%= f.submit class: 'btn btn-success' %>
   </div>

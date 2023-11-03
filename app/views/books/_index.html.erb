@@ -22,6 +22,12 @@
           <%= render 'favorites/favorite_btn', book: book %>
         </td>
         <td><%= link_to "#{book.post_comments.count}コメント", book_path(book.id) %></td>
+        
+        <td>
+      　　<!-- タグ名を連結して表示 -->
+         <% tag_names = book.tags.map(&:name).join(', ') %> <!--このコードでは、book.tags から各タグの名前を取得し、map メソッドを使用して名前の配列を作成します。そして、join メソッドを使って名前をカンマで区切って連結して表示しています。これにより、各書籍のタグ名が book.title の横に表示されます。--
+         <%= tag_names %>
+        </td>
       </tr>
     <% end %>
   </tbody>
